@@ -111,13 +111,14 @@ def midi_to_notes(midi, fs, hop, smooth, minduration):
             duration += 1
         else:
             # treat 0 as silence
-            if p_prev > 0:
-                # add note
-                duration_sec = duration * hop / float(fs)
-                # only add notes that are long enough
-                if duration_sec >= minduration:
-                    onset_sec = onset * hop / float(fs)
-                    notes.append((onset_sec, duration_sec, p_prev))
+            if p_prev is not None:
+                if p_prev > 0:
+                    # add note
+                    duration_sec = duration * hop / float(fs)
+                    # only add notes that are long enough
+                    if duration_sec >= minduration:
+                        onset_sec = onset * hop / float(fs)
+                        notes.append((onset_sec, duration_sec, int(p_prev)))
 
             # start new note
             onset = n
